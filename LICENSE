@@ -1,0 +1,59 @@
+MIT License
+
+Copyright (c) 2018 PAndBee
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+#include "SR04.h"
+#define TRIG_PIN 12
+#define ECHO_PIN 11
+int Buzzer_PIN = 10;
+int LEDBlue = 9;
+int LEDRed = 8;
+SR04 sr04 = SR04(ECHO_PIN,TRIG_PIN);
+long a;
+
+void setup() {
+   pinMode (Buzzer_PIN, OUTPUT);
+   pinMode (LEDBlue, OUTPUT);
+   pinMode (LEDRed, OUTPUT);
+   Serial.begin(9600);
+   delay(1000);
+}
+
+void loop() {
+  digitalWrite (LEDRed, LOW);
+  digitalWrite (LEDBlue, LOW); 
+   a=sr04.Distance();
+   Serial.print(a);
+   Serial.println("cm");
+   unsigned char i;
+   if( a <= 20){
+    digitalWrite (LEDBlue, HIGH);
+    digitalWrite (LEDRed, LOW); 
+    for (i = 0; i<100; i++){
+      digitalWrite(Buzzer_PIN, HIGH);
+      delay(1); 
+      digitalWrite(Buzzer_PIN, LOW);
+      delay(1);}
+    digitalWrite (LEDBlue, LOW);
+    digitalWrite (LEDRed, HIGH);
+    delay (200);  
+   }
+}
